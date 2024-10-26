@@ -1,0 +1,253 @@
+$ruler-height: 80px; // Slightly taller for better visibility
+$primary-color: #3f51b5;
+$secondary-color: #f50057;
+$background-color: #f5f5f5;
+$card-background: #ffffff;
+$text-color: #333333;
+$border-radius: 8px;
+$box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: $text-color;
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1200px; // Adjust this value as needed
+  background-color: rgba(255, 255, 255, 0.8); // Semi-transparent white
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.box-container {
+  width: 100%;
+  max-width: 1000px; // Reduced from 1200px
+  margin: 15px auto; // Center the container and reduce vertical margin
+  margin-bottom: 1rem;
+}
+
+.ruler-card {
+  height: auto; // Allow height to adjust to content
+  min-height: 60px; // Minimum height
+  width: 100%;
+  max-width: 1000px;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  background-color: $card-background;
+  display: flex; // Change to flex
+  align-items: center;
+  padding: 10px; // Reduce padding
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.header-card {
+  background-color: $primary-color;
+  color: white;
+}
+
+.card-content {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr 3fr 1fr;
+  width: 100%;
+  gap: 0.5rem; // Reduced from 1rem
+  padding: 0.75rem; // Reduced from 1rem
+  align-items: center;
+}
+
+.header-item, .body-item {
+  padding: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  position: relative; // Add this for positioning the tooltip
+
+  &:hover {
+    overflow: visible; // Show overflow on hover
+
+    &::after {
+      content: attr(data-full-text);
+      position: absolute;
+      left: 0;
+      top: 100%;
+      background-color: #333;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      z-index: 1;
+      font-size: 0.8rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+.arrival-time {
+  font-weight: 500;
+}
+
+.status-item {
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  cursor: default;
+
+  &.on-time {
+    background-color: #4caf50; // Green for on-time
+    color: white;
+  }
+
+  &.late {
+    background-color: #f50057; // Red for late
+    color: white;
+  }
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: $primary-color;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text, .error-text {
+  margin-top: 1rem;
+  color: $primary-color;
+}
+
+.trucks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: $primary-color;
+}
+
+// Add these new styles at the end of the file
+
+.error-message {
+  color: $secondary-color;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.body-item {
+  padding: 0.25rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.body-item span {
+  background-color: black;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.seller-id {
+  cursor: pointer;
+
+  span {
+    transition: background-color 0.3s ease;
+  }
+
+  &.on-time:hover span {
+    background-color: #4caf50; // Green for on-time
+  }
+
+  &.late:hover span {
+    background-color: #f50057; // Red for late
+  }
+}
+
+.status-item {
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  cursor: default;
+
+  &.on-time {
+    background-color: #4caf50; // Green for on-time
+    color: white;
+  }
+
+  &.late {
+    background-color: #f50057; // Red for late
+    color: white;
+  }
+}
+
+// Remove any ::after pseudo-elements that might be causing tooltips
+.body-item::after,
+.body-item:hover::after {
+  display: none;
+}
+
