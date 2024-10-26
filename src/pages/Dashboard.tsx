@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useTrucksOnSite } from '../../hooks/useTrucksOnSite';
+import { useTrucksOnSite } from '../hooks/useTrucksOnSite.ts';
 import { Box, ThemeProvider, createTheme } from '@mui/material';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import { Link } from 'react-router-dom';

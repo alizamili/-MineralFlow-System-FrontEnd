@@ -5,7 +5,8 @@ import {RouteGuard} from "./components/RouteGuard.tsx"
 import {useContext} from "react"
 import TruckComponent from "./components/TruckComponent.tsx"
 import SecurityContext from "./context/SecurityContext.ts"
-import {Dashboard} from "./components/nav/Dashboard.tsx";
+import {Dashboard} from "./pages/Dashboard.tsx";
+import TruckOnTimePage from "./components/TruckOnTimePage";
 
 const queryClient = new QueryClient()
 
@@ -41,7 +42,6 @@ const WarehouseInfo = () => <div>Warehouse Information</div>;
 const Inventory = () => <div>Inventory Management</div>;
 
 function App() {
-    const currentTime = new Date(2024, 9, 19, 11, 0, 0)
     return (
         <QueryClientProvider client={queryClient}>
             <SecurityContextProvider>
@@ -49,7 +49,7 @@ function App() {
                     <Header/>
                     <Routes>
                         <Route path="/" element={<Dashboard/>}/>
-                        <Route path="/trucks" element={<RouteGuard><TruckComponent time={currentTime}/></RouteGuard>}/>
+                        <Route path="/trucks" element={<RouteGuard><TruckOnTimePage /></RouteGuard>}/>
                         <Route path="/appointment" element={<MakeAppointment/>}/>
                         <Route path="/warehouse-info" element={<WarehouseInfo/>}/>
                         <Route path="/inventory" element={<Inventory/>}/>

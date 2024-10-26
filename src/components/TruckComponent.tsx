@@ -2,26 +2,48 @@ import './CardVariants.scss';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
-import {useTruckOnTime} from "../hooks/TruckOnTime";
-import {TruckOnTime} from "../model/TruckOnTime";
+import { Link } from 'react-router-dom';
+import { useTruckOnTime } from "../hooks/TruckOnTime";
+import { TruckOnTime } from "../model/TruckOnTime";
+import { Button } from "@mui/material";
 
 interface TruckOnTimeProps {
     time: Date;
+    onClearDate: () => void;
 }
 
-export default function TruckComponent({time}: TruckOnTimeProps) {
-    const {isLoading, isError, trucks} = useTruckOnTime(time);
+export default function TruckComponent({ time, onClearDate }: TruckOnTimeProps) {
+    const { isLoading, isError, trucks } = useTruckOnTime(time);
 
-    if (isLoading) return <LoadingIndicator/>;
-    if (isError) return <ErrorMessage/>;
+    if (isLoading) return <LoadingIndicator />;
+    if (isError) return <ErrorMessage />;
 
     return (
-        <div className="page-container">
+        <div className="page-container" style={{ position: 'relative' }}>
+            <Link to="/" style={{ position: 'absolute', top: '10px', left: '890px', textDecoration: 'none' }}>
+                <Button variant="outlined" color="primary">
+                    Back to Home
+                </Button>
+            </Link>
+            <Button
+                onClick={onClearDate} // Call onClearDate instead of refreshing the page
+                variant="outlined"
+                color="secondary"
+                sx={{
+                    position: 'absolute',
+                    top: '10px',
+                    left: '15px',
+                    padding: '5px 10px',
+                }}
+            >
+                Clear Date
+            </Button>
+
             <Typography level="h1" className="page-title">Truck Status</Typography>
-            <TruckHeader/>
+            <TruckHeader />
             <div className="trucks-list">
                 {trucks?.map((truck: TruckOnTime) => (
-                    <TruckRow key={truck.licensePlate} truck={truck}/>
+                    <TruckRow key={truck.licensePlate} truck={truck} />
                 ))}
             </div>
         </div>
@@ -53,7 +75,7 @@ const TruckHeader = () => (
     </Box>
 );
 
-const TruckRow = ({truck}: { truck: TruckOnTime }) => {
+const TruckRow = ({ truck }: { truck: TruckOnTime }) => {
     const formatTimeOfArrival = (timeArray: number[]): string => {
         const [year, month, day, hour, minute] = timeArray;
         const date = new Date(year, month - 1, day, hour, minute);
