@@ -5,49 +5,59 @@ import {RouteGuard} from "./components/RouteGuard.tsx"
 import {useContext} from "react"
 import TruckComponent from "./components/TruckComponent.tsx"
 import SecurityContext from "./context/SecurityContext.ts"
+import {Dashboard} from "./components/nav/Dashboard.tsx";
 
 const queryClient = new QueryClient()
 
 function Header() {
-    const {logout, loggedInUser} = useContext(SecurityContext)
+    const {logout, loggedInUser} = useContext(SecurityContext);
+
     return (
-        <div>
-            <div>Hello {loggedInUser}</div>
-            <nav>
-                <Link to="/">Home</Link> | <Link to="/trucks">Trucks</Link>
-            </nav>
-            <button onClick={logout}>Logout</button>
+        <div style={{
+            position: 'absolute',
+            top: '10px',
+            right: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px'
+        }}>
+            <span>Hello, {loggedInUser}</span>
+            <button onClick={logout} style={{
+                padding: '5px 10px',
+                backgroundColor: '#333',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer'
+            }}>
+                Logout
+            </button>
         </div>
-    )
+    );
 }
 
-function HomePage() {
-    return (
-        <div>
-            <h1>Welcome to the Truck Management System</h1>
-            <p>This is the home page. Click on the links to navigate.</p>
-        </div>
-    )
-}
+const MakeAppointment = () => <div>Make an Appointment</div>;
+const WarehouseInfo = () => <div>Warehouse Information</div>;
+const Inventory = () => <div>Inventory Management</div>;
 
 function App() {
     const currentTime = new Date(2024, 9, 19, 11, 0, 0)
-
     return (
         <QueryClientProvider client={queryClient}>
             <SecurityContextProvider>
                 <BrowserRouter>
-                    <Header />
+                    <Header/>
                     <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/trucks" element={<RouteGuard> <TruckComponent time={currentTime} /></RouteGuard>} />
-
-
+                        <Route path="/" element={<Dashboard/>}/>
+                        <Route path="/trucks" element={<RouteGuard><TruckComponent time={currentTime}/></RouteGuard>}/>
+                        <Route path="/appointment" element={<MakeAppointment/>}/>
+                        <Route path="/warehouse-info" element={<WarehouseInfo/>}/>
+                        <Route path="/inventory" element={<Inventory/>}/>
                     </Routes>
                 </BrowserRouter>
             </SecurityContextProvider>
         </QueryClientProvider>
-    )
+    );
 }
 
-export default App
+export default App;
