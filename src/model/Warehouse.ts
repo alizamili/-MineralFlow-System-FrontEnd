@@ -8,3 +8,12 @@
 //     amountOfMaterial: number;
 //     sellerID: UUID;
 // }
+
+export interface Warehouse {
+    warehouseId: string;
+    sellerId: string;
+    totalRawMaterial: number;
+    materialType: string;
+    isWarehouseFull: boolean;
+    isWarehouseOverloaded: boolean;
+}

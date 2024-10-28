@@ -17,6 +17,7 @@ const keycloak: Keycloak = new Keycloak(keycloakConfig)
 
 export default function SecurityContextProvider({children}: IWithChildren) {
     const [loggedInUser, setLoggedInUser] = useState<string | undefined>(undefined)
+    const [userRole, setUserRole] = useState<string | undefined>(undefined)
 
     useEffect(() => {
         keycloak.init({onLoad: 'login-required'})
@@ -25,6 +26,10 @@ export default function SecurityContextProvider({children}: IWithChildren) {
     keycloak.onAuthSuccess = () => {
         addAccessTokenToAuthHeader(keycloak.token)
         setLoggedInUser(keycloak.idTokenParsed?.given_name)
+        // Get the role from token and ensure it's set immediately
+        const roles = keycloak.tokenParsed?.realm_access?.roles || []
+        const isSeller = roles.find(role => role.toLowerCase() === 'seller')
+        setUserRole(isSeller ? 'seller' : 'manager')
     }
 
     keycloak.onAuthLogout = () => {
@@ -56,11 +61,19 @@ export default function SecurityContextProvider({children}: IWithChildren) {
         else return false
     }
 
+    function hasRole(role: string): boolean {
+        // Add more strict checking
+        if (!userRole) return false;
+        return userRole.toLowerCase() === role.toLowerCase();
+    }
+
     return (
         <SecurityContext.Provider
             value={{
                 isAuthenticated,
                 loggedInUser,
+                userRole,
+                hasRole,
                 login,
                 logout,
             }}

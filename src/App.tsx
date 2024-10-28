@@ -1,17 +1,19 @@
-import {BrowserRouter, Routes, Route, Link} from "react-router-dom"
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
-import SecurityContextProvider from "./context/SecurityContextProvider.tsx"
-import {RouteGuard} from "./components/RouteGuard.tsx"
-import {useContext} from "react"
-import TruckComponent from "./components/TruckComponent.tsx"
-import SecurityContext from "./context/SecurityContext.ts"
-import {Dashboard} from "./pages/Dashboard.tsx";
-import TruckOnTimePage from "./components/TruckOnTimePage";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SecurityContextProvider from "./context/SecurityContextProvider.tsx";
+import { useContext } from "react";
+import SecurityContext from "./context/SecurityContext.ts";
+import { Dashboard } from "./pages/Dashboard.tsx";
+import TruckOnTimePage from "./components/TruckOnTimePage.tsx";
+import AppointmentForm from "./components/AppointmentForm";
+import { RoleGuard } from "./components/RoleGuard";
+import PurchaseOrderComponent from "./components/PurchaseOrderComponent.tsx";
+import WarehouseComponent from "./components/WarehouseComponent.tsx";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 function Header() {
-    const {logout, loggedInUser} = useContext(SecurityContext);
+    const { logout, loggedInUser } = useContext(SecurityContext);
 
     return (
         <div style={{
@@ -37,26 +39,55 @@ function Header() {
     );
 }
 
-const MakeAppointment = () => <div>Make an Appointment</div>;
-const WarehouseInfo = () => <div>Warehouse Information</div>;
-const Inventory = () => <div>Inventory Management</div>;
-
 function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <SecurityContextProvider>
+        <SecurityContextProvider>
+            <QueryClientProvider client={queryClient}>
                 <BrowserRouter>
-                    <Header/>
+                    <Header />
                     <Routes>
-                        <Route path="/" element={<Dashboard/>}/>
-                        <Route path="/trucks" element={<RouteGuard><TruckOnTimePage /></RouteGuard>}/>
-                        <Route path="/appointment" element={<MakeAppointment/>}/>
-                        <Route path="/warehouse-info" element={<WarehouseInfo/>}/>
-                        <Route path="/inventory" element={<Inventory/>}/>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route
+                            path="/trucks"
+                            element={
+                                <RoleGuard requiredRole="manager">
+                                    <TruckOnTimePage />
+                                </RoleGuard>
+                            }
+                        />
+                        <Route
+                            path="/warehouse-info"
+                            element={
+                                <RoleGuard requiredRole="manager">
+                                    <WarehouseComponent />
+                                </RoleGuard>
+                            }
+                        />
+                        <Route
+                            path="/PurchaseOrder"
+                            element={
+                                <RoleGuard requiredRole="manager">
+                                    <PurchaseOrderComponent />
+                                </RoleGuard>
+                            }
+                        />
+
+                        {/* Seller Route */}
+                        <Route
+                            path="/appointment"
+                            element={
+                                <RoleGuard requiredRole="seller">
+                                    <AppointmentForm />
+                                </RoleGuard>
+                            }
+                        />
+
+                        {/* Fallback Route */}
+                        <Route path="*" element={<Navigate to="/" />} />
                     </Routes>
                 </BrowserRouter>
-            </SecurityContextProvider>
-        </QueryClientProvider>
+            </QueryClientProvider>
+        </SecurityContextProvider>
     );
 }
 

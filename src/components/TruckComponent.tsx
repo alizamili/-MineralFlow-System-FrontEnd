@@ -19,7 +19,7 @@ export default function TruckComponent({ time, onClearDate }: TruckOnTimeProps) 
     if (isError) return <ErrorMessage />;
 
     return (
-        <div className="page-container" style={{ position: 'relative' }}>
+        <div className="truck-component">
             <Link to="/" style={{ position: 'absolute', top: '10px', left: '890px', textDecoration: 'none' }}>
                 <Button variant="outlined" color="primary">
                     Back to Home

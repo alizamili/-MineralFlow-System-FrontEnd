@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { useMemo, useContext } from 'react';
 import { useTrucksOnSite } from '../hooks/useTrucksOnSite.ts';
 import { Box, ThemeProvider, createTheme } from '@mui/material';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import { Link } from 'react-router-dom';
+import SecurityContext from '../context/SecurityContext';
 
 const theme = createTheme({
     palette: {
@@ -14,16 +15,21 @@ const theme = createTheme({
 });
 
 export function Dashboard() {
-    // Memoize the current date to avoid continuous updates
-    const currentDate = useMemo(() =>  new Date(2024, 9, 19, 11, 0, 0), []);
+    const currentDate = useMemo(() => new Date(2024, 9, 19, 11, 0, 0), []);
     const { data: trucksOnSite, isLoading } = useTrucksOnSite(currentDate, true);
+    const { hasRole } = useContext(SecurityContext);
 
-    const sections = [
-        { title: "TruckOnTime", path: "/trucks" },
-        { title: "Make Appointment", path: "/appointment" },
-        { title: "Warehouse Info", path: "/warehouse-info" },
-        { title: "Inventory", path: "/inventory" },
-    ];
+    // Define sections based on role
+    const sections = hasRole('manager')
+    ? [
+          { title: "TruckOnTime", path: "/trucks" },
+          { title: "Warehouse Info", path: "/warehouse-info" },
+          { title: "Purchase Order", path: "/PurchaseOrder" }, // Update to match the route in App
+      ]
+    : hasRole('seller')
+    ? [{ title: "Make Appointment", path: "/appointment" }]
+    : [];
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -38,79 +44,55 @@ export function Dashboard() {
                     gap: 4,
                 }}
             >
-                <Box
-                    sx={{
-                        width: 150,
-                        height: 80,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 1,
-                        bgcolor: 'primary.dark',
-                        color: 'white',
-                        fontSize: 14,
-                        fontWeight: 'bold',
-                        mb: 4,
-                        boxShadow: 3,
-                    }}
-                >
-                    <LocalShippingIcon sx={{ fontSize: 30, mb: 1 }} />
-                    {isLoading ? "Loading..." : `Trucks On-Site: ${trucksOnSite}`}
-                </Box>
+                {/* Show Trucks On-Site box only for manager */}
+                {hasRole('manager') && (
+                    <Box
+                        sx={{
+                            width: 150,
+                            height: 80,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 1,
+                            bgcolor: 'primary.dark',
+                            color: 'white',
+                            fontSize: 14,
+                            fontWeight: 'bold',
+                            mb: 4,
+                            boxShadow: 3,
+                        }}
+                    >
+                        <LocalShippingIcon sx={{ fontSize: 30, mb: 1 }} />
+                        {isLoading ? "Loading..." : `Trucks On-Site: ${trucksOnSite}`}
+                    </Box>
+                )}
 
+                {/* Show only the sections available to the user’s role */}
                 <Box sx={{ display: 'flex', gap: 4 }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                        {sections.slice(0, 2).map((section) => (
-                            <Link to={section.path} key={section.title} style={{ textDecoration: 'none' }}>
-                                <Box
-                                    sx={{
-                                        width: 200,
-                                        height: 150,
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        borderRadius: 1,
-                                        bgcolor: 'primary.main',
-                                        color: 'white',
-                                        fontSize: 16,
-                                        fontWeight: 'bold',
-                                        '&:hover': {
-                                            bgcolor: 'primary.dark',
-                                        },
-                                    }}
-                                >
-                                    {section.title}
-                                </Box>
-                            </Link>
-                        ))}
-                    </Box>
-
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                        {sections.slice(2).map((section) => (
-                            <Link to={section.path} key={section.title} style={{ textDecoration: 'none' }}>
-                                <Box
-                                    sx={{
-                                        width: 200,
-                                        height: 150,
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        borderRadius: 1,
-                                        bgcolor: 'primary.main',
-                                        color: 'white',
-                                        fontSize: 16,
-                                        fontWeight: 'bold',
-                                        '&:hover': {
-                                            bgcolor: 'primary.dark',
-                                        },
-                                    }}
-                                >
-                                    {section.title}
-                                </Box>
-                            </Link>
-                        ))}
-                    </Box>
+                    {sections.map((section) => (
+                        <Link to={section.path} key={section.title} style={{ textDecoration: 'none' }}>
+                            <Box
+                                sx={{
+                                    width: 200,
+                                    height: 150,
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: 1,
+                                    bgcolor: 'primary.main',
+                                    color: 'white',
+                                    fontSize: 16,
+                                    fontWeight: 'bold',
+                                    '&:hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                            >
+                                {section.title}
+                            </Box>
+                        </Link>
+                    ))}
                 </Box>
             </Box>
         </ThemeProvider>
