@@ -1,0 +1,67 @@
+.wh-floorplan-wrapper {
+    padding: 20px;
+}
+
+.wh-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wh-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.wh-floorplan {
+    position: relative;
+    width: 500px; // Adjust based on desired layout size
+    height: auto;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.warehouse-block {
+    position: absolute;
+    width: 100px;
+    height: 80px;
+    border: 1px solid #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.warehouse-content h3 {
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #333;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
