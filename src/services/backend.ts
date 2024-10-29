@@ -37,8 +37,9 @@ export async function fetchPurchaseOrders(): Promise<PurchaseOrder[]> {
     const { data: purchaseOrders } = await axios.get<PurchaseOrder[]>(`${landSideBackendUrl}/PurchaseOrders`);
     return purchaseOrders;
 }
-
 export async function fetchWarehouses(): Promise<Warehouse[]> {
-    const { data: warehouses } = await axios.get<Warehouse[]>(`${landSideBackendUrl}/warehousemanager/warehouses`);
+    const { data: warehouses } = await axios.get<Warehouse[]>(`${landSideBackendUrl}/warehouseManager`);
     return warehouses;
 }
+
+

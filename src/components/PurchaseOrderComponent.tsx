@@ -1,14 +1,12 @@
-// PurchaseOrderComponent.tsx
-
 import './CardVariants.scss';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { usePurchaseOrders } from "../hooks/usePurchaseOrders";
 import { PurchaseOrder } from "../model/PurchaseOrder";
-import { Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const LoadingIndicator = (): JSX.Element => (
     <div className="loading-container">
@@ -26,7 +24,7 @@ const ErrorMessage = () => (
 export default function PurchaseOrderComponent() {
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search);
-    const sellerId = queryParams.get('sellerId'); // Optional sellerId parameter from URL
+    const sellerId = queryParams.get('sellerId'); // Extract sellerId from query parameters
 
     const { isLoading, isError, purchaseOrders } = usePurchaseOrders(true); // Enable polling
     const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -47,12 +45,6 @@ export default function PurchaseOrderComponent() {
 
     return (
         <div className="page-container">
-            <Link to="/" style={{ position: 'absolute', top: '40px', left: '70px', textDecoration: 'none' }}>
-                <Button variant="outlined" color="primary">
-                    Back to Home
-                </Button>
-            </Link>
-
             <Typography level="h1" className="page-title">
                 {sellerId ? `Purchase Orders for Seller ${sellerId.slice(0, 8)}...` : 'All Purchase Orders'}
             </Typography>

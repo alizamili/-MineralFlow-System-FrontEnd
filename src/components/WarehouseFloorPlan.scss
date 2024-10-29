@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom right, #e0f7fa, #f8bbd0); // Set a gradient background for the whole page
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.floorplan-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  background: transparent; // Ensure the container itself is transparent
+}
+
+.warehouse-box {
+  padding: 20px;
+  border-radius: 10px;
+  width: 280px;
+  height: 160px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: white;
+
+  &.full {
+    background-color: #e57373; // Red for full warehouses
+  }
+
+  &.not-full {
+    background-color: #81c784; // Green for not full warehouses
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  p {
+    margin: 8px 0;
+    font-size: 1rem;
+  }
+}

@@ -1,14 +1,16 @@
+// src/App.tsx
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import SecurityContextProvider from "./context/SecurityContextProvider.tsx";
+import SecurityContextProvider from "./context/SecurityContextProvider";
 import { useContext } from "react";
-import SecurityContext from "./context/SecurityContext.ts";
-import { Dashboard } from "./pages/Dashboard.tsx";
-import TruckOnTimePage from "./components/TruckOnTimePage.tsx";
+import SecurityContext from "./context/SecurityContext";
+import { Dashboard } from "./pages/Dashboard";
+import TruckOnTimePage from "./components/TruckOnTimePage";
 import AppointmentForm from "./components/AppointmentForm";
 import { RoleGuard } from "./components/RoleGuard";
-import PurchaseOrderComponent from "./components/PurchaseOrderComponent.tsx";
-import WarehouseComponent from "./components/WarehouseComponent.tsx";
+import PurchaseOrderComponent from "./components/PurchaseOrderComponent";
+import WarehouseFloorPlan from "./components/WarehouseFloorPlan";
+import WarehouseDetails from "./components/WarehouseDetails";
 
 const queryClient = new QueryClient();
 
@@ -59,7 +61,15 @@ function App() {
                             path="/warehouse-info"
                             element={
                                 <RoleGuard requiredRole="manager">
-                                    <WarehouseComponent />
+                                    <WarehouseFloorPlan />
+                                </RoleGuard>
+                            }
+                        />
+                        <Route
+                            path="/warehouse/:warehouseId"
+                            element={
+                                <RoleGuard requiredRole="manager">
+                                    <WarehouseDetails />
                                 </RoleGuard>
                             }
                         />
@@ -71,8 +81,6 @@ function App() {
                                 </RoleGuard>
                             }
                         />
-
-                        {/* Seller Route */}
                         <Route
                             path="/appointment"
                             element={
@@ -81,8 +89,6 @@ function App() {
                                 </RoleGuard>
                             }
                         />
-
-                        {/* Fallback Route */}
                         <Route path="*" element={<Navigate to="/" />} />
                     </Routes>
                 </BrowserRouter>

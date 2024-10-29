@@ -5,7 +5,7 @@ import { RouteGuard } from './RouteGuard';
 import { SellerRouteGuard } from '../context/SellerRouteGuard';
 import { Dashboard } from '../pages/Dashboard';
 import TruckOnTimePage from './TruckOnTimePage';
-import AppointmentForm from './app/AppointmentForm';
+import AppointmentForm from '../components/AppointmentForm';
 
 const WarehouseInfo = () => <div>Warehouse Information</div>;
 const Inventory = () => <div>Inventory Management</div>;

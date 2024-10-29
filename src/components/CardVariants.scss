@@ -250,4 +250,17 @@ body {
 .body-item:hover::after {
   display: none;
 }
+.scrollable-container {
+  max-height: 70vh; // Adjust the height as needed
+  overflow-y: auto;
+  margin-top: 20px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #f8f8f8; // Match the background color for seamless design
+  padding-top: 10px;
+}
 
