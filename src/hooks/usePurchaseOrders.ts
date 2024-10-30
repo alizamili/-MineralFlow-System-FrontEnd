@@ -7,7 +7,7 @@ export function usePurchaseOrders(enablePolling: boolean) {
     const { isLoading, isError, data: purchaseOrders } = useQuery<PurchaseOrder[]>({
         queryKey: ['purchaseOrders'],
         queryFn: fetchPurchaseOrders,
-        refetchInterval: enablePolling ? 60000 : false, // Poll every 60 seconds if enabled
+        refetchInterval: enablePolling ? 20000 : false,
     });
 
     return {

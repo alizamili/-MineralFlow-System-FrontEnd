@@ -5,7 +5,8 @@ import { Warehouse } from '../model/Warehouse';
 export function useWarehouses() {
     const { isLoading, isError, data: warehouses } = useQuery<Warehouse[]>({
         queryKey: ['warehouses'],
-        queryFn: fetchWarehouses
+        queryFn: fetchWarehouses,
+        refetchInterval: 20000
     });
 
     return { isLoading, isError, warehouses };

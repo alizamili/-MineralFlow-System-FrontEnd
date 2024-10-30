@@ -5,6 +5,6 @@ export function useTrucksOnSite(date: Date, enablePolling: boolean) {
     return useQuery({
         queryKey: ['trucksOnSite', date.toISOString().split('T')[0]],
         queryFn: () => fetchTrucksOnSite(date),
-        refetchInterval: enablePolling ? 60000 : false,
+        refetchInterval: enablePolling ? 20000 : false,
     });
 }
