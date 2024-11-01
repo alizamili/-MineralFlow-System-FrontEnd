@@ -5,7 +5,7 @@ import { Warehouse } from '../model/Warehouse';
 import './WarehouseFloorPlan.scss';
 import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
-const MAX_LIMIT = 500;
+const MAX_LIMIT = 500000;
 
 const WarehouseFloorPlan: React.FC = () => {
     const { warehouses, isLoading, isError } = useWarehouses();
