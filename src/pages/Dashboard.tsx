@@ -1,4 +1,4 @@
-import { useMemo, useContext } from 'react';
+import {  useContext } from 'react';
 import { useTrucksOnSite } from '../hooks/useTrucksOnSite.ts';
 import { Box, ThemeProvider, createTheme } from '@mui/material';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
@@ -15,8 +15,7 @@ const theme = createTheme({
 });
 
 export function Dashboard() {
-    const currentDate = useMemo(() => new Date(2024, 9, 19, 11, 0, 0), []);
-    const { data: trucksOnSite, isLoading } = useTrucksOnSite(currentDate, true);
+    const { data: trucksOnSite, isLoading } = useTrucksOnSite(true);
     const { hasRole } = useContext(SecurityContext);
 
     // Define sections based on role

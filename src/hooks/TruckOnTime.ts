@@ -14,6 +14,6 @@ export function useTruckOnTime(time: Date) {
     return {
         isLoading,
         isError,
-        trucks,
+        trucks
     };
 }

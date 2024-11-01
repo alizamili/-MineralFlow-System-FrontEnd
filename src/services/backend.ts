@@ -18,9 +18,8 @@ export async function fetchTruckOnTime(onTime: Date) {
 
 
 
-export async function fetchTrucksOnSite(date: Date): Promise<number> {
-    const formattedDate = formatDate(date);
-    const { data } = await axios.get<number>(`${landSideBackendUrl}/warehousemanager/trucks/onSite?date=${formattedDate}`);
+export async function fetchTrucksOnSite(): Promise<number> {
+    const { data } = await axios.get<number>(`${landSideBackendUrl}/warehousemanager/trucks/onSite`);
     return data; //
 }
 

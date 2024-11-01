@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchTrucksOnSite } from "../services/backend";
 
-export function useTrucksOnSite(date: Date, enablePolling: boolean) {
+export function useTrucksOnSite( enablePolling: boolean) {
     return useQuery({
-        queryKey: ['trucksOnSite', date.toISOString().split('T')[0]],
-        queryFn: () => fetchTrucksOnSite(date),
+        queryKey: ['trucksOnSite'],
+        queryFn: () => fetchTrucksOnSite(),
         refetchInterval: enablePolling ? 20000 : false,
     });
 }
