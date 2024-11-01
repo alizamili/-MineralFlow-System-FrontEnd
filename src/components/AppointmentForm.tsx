@@ -1,3 +1,4 @@
+
 import React, { useState, useContext, useEffect } from 'react';
 import SecurityContext from '../context/SecurityContext';
 import {
@@ -22,7 +23,7 @@ import { useAppointment } from '../hooks/useAppointment';
 export default function AppointmentForm() {
     const { isAuthenticated, userRole } = useContext(SecurityContext);
     const { createAppointmentMutation } = useAppointment();
-    
+
     const [formData, setFormData] = useState<Partial<Appointment>>({
         sellerId: '',
         licensePlate: '',
@@ -60,8 +61,15 @@ export default function AppointmentForm() {
                 setSuccessMessage('Appointment created successfully!');
                 resetForm();
             },
-            onError: (error: Error) => {
-                setErrorMessage(error.message);
+            onError: (error: any) => {
+                // Check for detailed error message from the backend, either as plain text or JSON
+                const backendMessage = error.response?.data?.message // Check if `message` field exists
+                    || error.response?.data?.error // Check if `error` field exists
+                    || (typeof error.response?.data === 'string' ? error.response.data : null) // Plain text response
+                    || error.message // Fallback to generic error message
+                    || "An error occurred. Please try again."; // Fallback message
+
+                setErrorMessage(backendMessage);
             }
         });
     };
@@ -126,7 +134,7 @@ export default function AppointmentForm() {
                             <FormLabel>Seller ID (UUID)</FormLabel>
                             <Input
                                 value={formData.sellerId}
-                                onChange={(e) => 
+                                onChange={(e) =>
                                     setFormData({...formData, sellerId: e.target.value})
                                 }
                                 placeholder="Enter Seller ID"
@@ -137,7 +145,7 @@ export default function AppointmentForm() {
                             <FormLabel>License Plate</FormLabel>
                             <Input
                                 value={formData.licensePlate}
-                                onChange={(e) => 
+                                onChange={(e) =>
                                     setFormData({...formData, licensePlate: e.target.value})
                                 }
                                 placeholder="Enter License Plate"
@@ -148,7 +156,7 @@ export default function AppointmentForm() {
                             <FormLabel>Material Type</FormLabel>
                             <Select
                                 value={formData.materialType}
-                                onChange={(_, value) => 
+                                onChange={(_, value) =>
                                     setFormData({...formData, materialType: value as MaterialType})
                                 }
                             >
